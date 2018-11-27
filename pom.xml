@@ -97,7 +97,6 @@
                             <encoding>UTF-8</encoding>
                             <consoleOutput>true</consoleOutput>
                             <failsOnError>true</failsOnError>
-                            <linkXRef>false</linkXRef>
                             <configLocation>${practice.main.basedir}/src/checkstyle/checkstyle.xml</configLocation>
                         </configuration>
                     </execution>
