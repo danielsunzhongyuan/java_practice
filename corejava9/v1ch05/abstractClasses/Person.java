@@ -1,17 +1,15 @@
 package abstractClasses;
 
-public abstract class Person
-{
-   public abstract String getDescription();
-   private String name;
+public abstract class Person {
+    public abstract String getDescription();
 
-   public Person(String n)
-   {
-      name = n;
-   }
+    private String name;
 
-   public String getName()
-   {
-      return name;
-   }
+    public Person(String n) {
+        name = n;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

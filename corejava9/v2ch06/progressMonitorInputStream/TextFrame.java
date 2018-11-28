@@ -11,91 +11,77 @@ import javax.swing.*;
  * constructed when the file is loaded and set as the content pane of the frame when the loading is
  * complete. That avoids flicker during loading.
  */
-public class TextFrame extends JFrame
-{
-   public static final int TEXT_ROWS = 10;
-   public static final int TEXT_COLUMNS = 40;
+public class TextFrame extends JFrame {
+    public static final int TEXT_ROWS = 10;
+    public static final int TEXT_COLUMNS = 40;
 
-   private JMenuItem openItem;
-   private JMenuItem exitItem;
-   private JTextArea textArea;
-   private JFileChooser chooser;
+    private JMenuItem openItem;
+    private JMenuItem exitItem;
+    private JTextArea textArea;
+    private JFileChooser chooser;
 
-   public TextFrame()
-   {
-      textArea = new JTextArea(TEXT_ROWS, TEXT_COLUMNS);
-      add(new JScrollPane(textArea));
+    public TextFrame() {
+        textArea = new JTextArea(TEXT_ROWS, TEXT_COLUMNS);
+        add(new JScrollPane(textArea));
 
-      chooser = new JFileChooser();
-      chooser.setCurrentDirectory(new File("."));
+        chooser = new JFileChooser();
+        chooser.setCurrentDirectory(new File("."));
 
-      JMenuBar menuBar = new JMenuBar();
-      setJMenuBar(menuBar);
-      JMenu fileMenu = new JMenu("File");
-      menuBar.add(fileMenu);
-      openItem = new JMenuItem("Open");
-      openItem.addActionListener(new ActionListener()
-         {
-            public void actionPerformed(ActionEvent event)
-            {
-               try
-               {
-                  openFile();
-               }
-               catch (IOException exception)
-               {
-                  exception.printStackTrace();
-               }
+        JMenuBar menuBar = new JMenuBar();
+        setJMenuBar(menuBar);
+        JMenu fileMenu = new JMenu("File");
+        menuBar.add(fileMenu);
+        openItem = new JMenuItem("Open");
+        openItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                try {
+                    openFile();
+                } catch (IOException exception) {
+                    exception.printStackTrace();
+                }
             }
-         });
+        });
 
-      fileMenu.add(openItem);
-      exitItem = new JMenuItem("Exit");
-      exitItem.addActionListener(new ActionListener()
-         {
-            public void actionPerformed(ActionEvent event)
-            {
-               System.exit(0);
+        fileMenu.add(openItem);
+        exitItem = new JMenuItem("Exit");
+        exitItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                System.exit(0);
             }
-         });
-      fileMenu.add(exitItem);
-      pack();
-   }
+        });
+        fileMenu.add(exitItem);
+        pack();
+    }
 
-   /**
-    * Prompts the user to select a file, loads the file into a text area, and sets it as the content
-    * pane of the frame.
-    */
-   public void openFile() throws IOException
-   {
-      int r = chooser.showOpenDialog(this);
-      if (r != JFileChooser.APPROVE_OPTION) return;
-      final File f = chooser.getSelectedFile();
+    /**
+     * Prompts the user to select a file, loads the file into a text area, and sets it as the content
+     * pane of the frame.
+     */
+    public void openFile() throws IOException {
+        int r = chooser.showOpenDialog(this);
+        if (r != JFileChooser.APPROVE_OPTION) return;
+        final File f = chooser.getSelectedFile();
 
-      // set up stream and reader filter sequence
-      
-      InputStream fileIn = Files.newInputStream(f.toPath());
-      final ProgressMonitorInputStream progressIn = new ProgressMonitorInputStream(
-         this, "Reading " + f.getName(), fileIn);      
+        // set up stream and reader filter sequence
 
-      textArea.setText("");
+        InputStream fileIn = Files.newInputStream(f.toPath());
+        final ProgressMonitorInputStream progressIn = new ProgressMonitorInputStream(
+                this, "Reading " + f.getName(), fileIn);
 
-      SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>()
-         {
-            protected Void doInBackground() throws Exception
-            {
-               try (Scanner in = new Scanner(progressIn))
-               {
-                  while (in.hasNextLine())
-                  {
-                     String line = in.nextLine();
-                     textArea.append(line);
-                     textArea.append("\n");
-                  }
-               }
-               return null;
+        textArea.setText("");
+
+        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+            protected Void doInBackground() throws Exception {
+                try (Scanner in = new Scanner(progressIn)) {
+                    while (in.hasNextLine()) {
+                        String line = in.nextLine();
+                        textArea.append(line);
+                        textArea.append("\n");
+                    }
+                }
+                return null;
             }
-         };
-      worker.execute();
-   }
+        };
+        worker.execute();
+    }
 }
