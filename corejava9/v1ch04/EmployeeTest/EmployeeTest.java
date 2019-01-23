@@ -16,13 +16,19 @@ public class EmployeeTest {
         staff[2] = new Employee("Tony Tester", 40000, 1990, 3, 15);
 
         // raise everyone's salary by 5%
-        for (Employee e : staff)
+        for (Employee e : staff) {
             e.raiseSalary(5);
+        }
 
         // print out information about all Employee objects
-        for (Employee e : staff)
-            System.out.println("name=" + e.getName() + ",salary=" + e.getSalary() + ",hireDay="
-                    + e.getHireDay());
+        for (Employee e : staff) {
+            System.out.println(e.toString());
+        }
+
+        // modify employee's hireday. BAD design.
+        Date d = staff[0].getHireDay();
+        d.setTime(d.getTime() - (long)10*365*24*60*60*1000);
+        System.out.println(staff[0]);
     }
 }
 
@@ -48,11 +54,21 @@ class Employee {
     }
 
     public Date getHireDay() {
-        return hireDay;
+//        return hireDay;
+        return hireDay.clone(); // it's better than code above
     }
 
     public void raiseSalary(double byPercent) {
         double raise = salary * byPercent / 100;
         salary += raise;
+    }
+
+    @java.lang.Override
+    public java.lang.String toString() {
+        return "Employee{" +
+                "name='" + name + '\'' +
+                ", salary=" + salary +
+                ", hireDay=" + hireDay +
+                '}';
     }
 }
