@@ -12,4 +12,4 @@
 | double | 0.0d |
 | Class | null |
 
-2. static private
+2. ShowProperties
