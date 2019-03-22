@@ -13,3 +13,10 @@
 | Class | null |
 
 2. ShowProperties
+
+
+3. HelloDate with JavaDoc
+
+```
+javadoc HelloDate.java
+```
