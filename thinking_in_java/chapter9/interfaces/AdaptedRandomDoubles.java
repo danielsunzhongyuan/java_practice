@@ -19,9 +19,12 @@ public class AdaptedRandomDoubles extends RandomDoubles implements Readable {
     }
 
     public static void main(String[] args) {
-        Scanner s = new Scanner(new AdaptedRandomDoubles(7));
-        while (s.hasNextDouble()) {
-            System.out.println(s.nextDouble() + " ");
+        try (Scanner s = new Scanner(new AdaptedRandomDoubles(7))) {
+            while (s.hasNextDouble()) {
+                System.out.println(s.nextDouble() + " ");
+            }
+        } catch (Exception e) {
+            System.out.println("Exception: " + e.toString());
         }
     }
 }
